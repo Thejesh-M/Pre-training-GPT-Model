@@ -113,7 +113,7 @@ By default, `train.py` loads hyperparameters from `config/default.yaml`. To over
 
 ```bash
 # Example: single‑GPU run with smaller batch size
-python train.py   batch_size=16   compile=False
+python train.py batch_size=16 compile=False
 ```
 
 - `batch_size=16` overrides the default micro‑batch size.  
@@ -124,7 +124,7 @@ python train.py   batch_size=16   compile=False
 To harness multiple GPUs on a single machine, use `torchrun` (PyTorch >= 1.9). For example, to train on 4 GPUs:
 
 ```bash
-torchrun --standalone --nproc_per_node=4 train.py   gradient_accumulation_steps=20   batch_size=8   device=cuda
+torchrun --standalone --nproc_per_node=4 train.py 
 ```
 
 - `--nproc_per_node=4` spawns 4 processes, one per GPU.  
@@ -137,11 +137,11 @@ If you have two nodes each with 4 GPUs (total 8 GPUs), you could do:
 
 - **On Node 0 (rank 0)**:  
   ```bash
-  torchrun     --nnodes=2     --nproc_per_node=4     --node_rank=0     --master_addr="123.456.123.456"     --master_port=1234     src/train.py       gradient_accumulation_steps=40       batch_size=4
+  torchrun --nnodes=2 --nproc_per_node=4 --node_rank=0 --master_addr="123.456.123.456" --master_port=1234 train.py
   ```
 - **On Node 1 (rank 1)**:  
   ```bash
-  torchrun     --nnodes=2     --nproc_per_node=4     --node_rank=1     --master_addr="123.456.123.456"     --master_port=1234     train.py       gradient_accumulation_steps=40       batch_size=4
+  torchrun --nnodes=2 --nproc_per_node=4 --node_rank=1 --master_addr="123.456.123.456" --master_port=1234 train.py
   ```
   - If your cluster lacks InfiniBand, prefix each command with `NCCL_IB_DISABLE=1`.
 
@@ -163,7 +163,7 @@ After training completes (or at any saved checkpoint), you can:
 Run `evaluate.py` to load a checkpoint and evaluate on the validation set:
 
 ```bash
-python evaluate.py   --model_path checkpoints/ckpt.pt   --data_dir data/openwebtext   --block_size 1024   --batch_size 8
+python evaluate.py   --model_path checkpoints/ckpt.pt --data_dir data/openwebtext --block_size 1024 --batch_size 8
 ```
 
 This script will print the average validation loss and perplexity. Adjust `--batch_size` as needed to fit your GPU memory.
@@ -173,7 +173,7 @@ This script will print the average validation loss and perplexity. Adjust `--bat
 Generate text samples (greedy or with top‑k/top‑p sampling) using `generate.py`:
 
 ```bash
-python generate.py   --model_path checkpoints/ckpt.pt   --prompt "Once upon a time, in a land far away"   --max_new_tokens 100   --temperature 0.8   --top_k 50   --top_p 0.95
+python generate.py --model_path checkpoints/ckpt.pt --prompt "Once upon a time, in a land far away" --max_new_tokens 100 --temperature 0.8 --top_k 50 --top_p 0.95
 ```
 
 - `--prompt`: initial text to condition on  

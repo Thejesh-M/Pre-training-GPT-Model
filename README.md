@@ -156,21 +156,9 @@ If you have two nodes each with 4 GPUs (total 8 GPUs), you could do:
 
 ## Evaluating the Model Performance
 
-After training completes (or at any saved checkpoint), you can:
+### Sampling Outputs
 
-### 1. Compute Perplexity / Validation Loss
-
-Run `evaluate.py` to load a checkpoint and evaluate on the validation set:
-
-```bash
-python evaluate.py   --model_path checkpoints/ckpt.pt --data_dir data/openwebtext --block_size 1024 --batch_size 8
-```
-
-This script will print the average validation loss and perplexity. Adjust `--batch_size` as needed to fit your GPU memory.
-
-### 2. Sampling Outputs
-
-Generate text samples (greedy or with top‑k/top‑p sampling) using `generate.py`:
+After training completes (or at any saved checkpoint), you can generate text samples (greedy or with top‑k/top‑p sampling) using `generate.py`:
 
 ```bash
 python generate.py --model_path checkpoints/ckpt.pt --prompt "Once upon a time, in a land far away" --max_new_tokens 100 --temperature 0.8 --top_k 50 --top_p 0.95

@@ -1,0 +1,48 @@
+# I/O
+out_dir: "checkpoints"
+eval_interval: 2000
+log_interval: 1
+eval_iters: 200
+eval_only: false
+always_save_checkpoint: true
+init_from: "scratch"
+
+# wandb logging
+wandb_log: true
+wandb_project: "owt"
+wandb_run_name: "gpt2"
+
+# data
+dataset: "openwebtext"
+gradient_accumulation_steps: 8 # to process 524,288 tokens per iteration
+batch_size: 64
+block_size: 1024
+
+# model
+n_layer: 12
+n_head: 12
+n_embd: 768
+dropout: 0.0
+bias: false
+
+# optimizer
+learning_rate: !!float 6e-4
+max_iters: 600000
+weight_decay: !!float 1e-1
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0
+
+# learning rate decay
+decay_lr: true
+warmup_iters: 2000
+lr_decay_iters: 600000
+min_lr: !!float 6e-5
+
+# distributed
+backend: "nccl"
+
+# system
+device: "cuda"
+dtype: "float16"     # we’ll auto‐promote types later if bf16 is available
+compile: true
